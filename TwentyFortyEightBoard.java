@@ -68,11 +68,40 @@ public class TwentyFortyEightBoard extends Board {
         }
     }
 
-    public void isGameOver() {
-        // TODO: called after every move, will check if there are any more moves that
-        // can be done
-        // If not call isGameOver in every iteration. If it returns true then it is Game
-        // Over
+public boolean isGameOver() {
+    // Check for any empty cells
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (this.currentBoard.get(i).get(j).get(0).GetValue().equals("0")) {
+                return false; // Game is not over if there's an empty cell
+            }
+        }
     }
+    
+    // Check for any adjacent cells with the same value (horizontal)
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH - 1; j++) {
+            String currentValue = this.currentBoard.get(i).get(j).get(0).GetValue();
+            String nextValue = this.currentBoard.get(i).get(j + 1).get(0).GetValue();
+            if (currentValue.equals(nextValue) && !currentValue.equals("0")) {
+                return false; // Game is not over if there are mergeable tiles horizontally
+            }
+        }
+    }
+    
+    // Check for any adjacent cells with the same value (vertical)
+    for (int i = 0; i < HEIGHT - 1; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            String currentValue = this.currentBoard.get(i).get(j).get(0).GetValue();
+            String belowValue = this.currentBoard.get(i + 1).get(j).get(0).GetValue();
+            if (currentValue.equals(belowValue) && !currentValue.equals("0")) {
+                return false; // Game is not over if there are mergeable tiles vertically
+            }
+        }
+    }
+    
+    // If we've made it here, there are no empty cells and no possible merges
+    return true; // Game is over
+}
 
 }
